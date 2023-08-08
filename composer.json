@@ -1,0 +1,20 @@
+{
+    "name": "stanliwise/parkway-wallet-sdk",
+    "authors": [
+        {
+            "name": "Aloh Stanley Benjamin",
+            "homepage": "https://github.com/Stanliwise",
+            "email": "stanliwise@gmail.com",
+            "role": "Backend Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5",
+        "laravel/framework": "^8.75"
+    },
+    "minimum-stability": "dev",
+    "version": "1.0.0"
+}
