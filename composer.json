@@ -22,5 +22,12 @@
         "laravel/framework": "^8.75"
     },
     "minimum-stability": "dev",
-    "version": "1.0.0"
+    "version": "1.0.0",
+    "extra": {
+        "laravel" : {
+            "providers": [
+                "Parkway\\Wallet\\Sdk\\ParkwayWalletServiceProvider"
+            ]
+        }
+    }
 }
