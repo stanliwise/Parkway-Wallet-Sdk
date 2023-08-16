@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::middleware('signature.validate')->prefix('transact')->group(function(){
-    ///Route::post('walletToWallet', [])
+Route::middleware('parkway.verify-signature')->prefix('transact')->group(function(){
+    Route::post('walletToWallet', function(){
+        logger('worked well');
+    });
 });
