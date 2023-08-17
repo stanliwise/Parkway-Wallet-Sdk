@@ -32,7 +32,7 @@ class ParkwayWalletServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'pwsdk');
 
         #add middleware
-        app()->make('router')->aliasMiddleware('parkway.verify-signature', ValidateRequestSignature::class);
+        app()->make('router')->aliasMiddleware('pwsdk.verify-signature', ValidateRequestSignature::class);
 
         #register route
         $this->registerRoutes();
