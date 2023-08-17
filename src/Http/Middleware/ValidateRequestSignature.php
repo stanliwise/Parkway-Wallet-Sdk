@@ -3,10 +3,12 @@
 namespace Parkway\Wallet\Sdk\Http\Middleware;
 
 use Closure;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Http;
 use Spatie\Crypto\Rsa\PublicKey;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class ValidateRequestSignature
 {
@@ -19,11 +21,18 @@ class ValidateRequestSignature
      */
     public function handle(Request $request, Closure $next)
     {
-        $is_valid = PublicKey::fromString(config('parkway.sdk.public_key'))->verify($request->json(), $request->header('PW-Signature'));
-        abort_unless($is_valid, Response::HTTP_UNAUTHORIZED, 'Signature verification failed');
+        try {
+            $json = $request->getContent() ?? "";
+            $is_valid = PublicKey::fromFile(storage_path('public.key'))->verify($json, $request->header('Pw-Signature') ?? "");
+            abort_unless($is_valid, Response::HTTP_UNAUTHORIZED, 'Signature verification failed');
+        } catch (HttpResponseException | HttpException $httpEx) {
+            throw $httpEx;
+        } catch (\Throwable $th) {
+            logger($th);
+            abort(Response::HTTP_INTERNAL_SERVER_ERROR, 'An Unknown error occured');
+        }
 
-        #verify counter is correc
-
+        #TODO: verify counter is correct
         return $next($request);
     }
 }
