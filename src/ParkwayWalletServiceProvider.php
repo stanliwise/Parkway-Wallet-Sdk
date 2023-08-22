@@ -4,6 +4,7 @@ namespace Parkway\Wallet\Sdk;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Parkway\Wallet\Sdk\Http\Middleware\EncryptResponse;
 use Parkway\Wallet\Sdk\Http\Middleware\ValidateRequestSignature;
 
 class ParkwayWalletServiceProvider extends ServiceProvider
@@ -33,6 +34,7 @@ class ParkwayWalletServiceProvider extends ServiceProvider
 
         #add middleware
         app()->make('router')->aliasMiddleware('pwsdk.verify-signature', ValidateRequestSignature::class);
+        app()->make('router')->aliasMiddleware('pwsdk.encryt-response', EncryptResponse::class);
 
         #register route
         $this->registerRoutes();
