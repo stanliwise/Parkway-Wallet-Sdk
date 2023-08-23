@@ -21,11 +21,11 @@ class BankServices
         try {
             #check if wallet has been blacklisted
             $response = Http::withToken(config('readycash.token'))->post(config('readycash.wallet_url') . '/transactions/banktransfer', [
+                "destinationBankCode" => $bankCode,
                 "fromAccountNumber" => $wallet,
                 "toAccountNumber" => $toAccountNumber,
-                "toAccountName" => $toAccountName,
-                "destinationBankCode" => $bankCode,
                 "transactionRef" => $transaction_reference,
+                "toAccountName" => $toAccountName,
                 "amount" => $amount,
                 "memo" => $narration
             ]);
@@ -35,14 +35,72 @@ class BankServices
 
             return $response->collect()->toArray();
         } catch (ConnectionException $conEx) {
-            return [];
+            return [
+                'code' => '00976',
+                'desc' => 'Service Unreachable',
+                'retRef' => '',
+                'stan' => '',
+                'transdatetime' => NULL,
+                'bvn' => '',
+                'voucher' => '',
+                'extra' => '',
+                'pin' => '',
+            ];
         } catch (\Throwable $th) {
-            return [];
+            return [
+                'code' => '00988',
+                'desc' => 'An Unknown error occured',
+                'retRef' => '',
+                'stan' => '',
+                'transdatetime' => NULL,
+                'bvn' => '',
+                'voucher' => '',
+                'extra' => '',
+                'pin' => '',
+            ];
         }
     }
 
 
-    public function processLocalTransfer()
+    public function processLocalTransfer(string $fromAccountNumber, string $toAccountNumber, string $sender_reference, string $amount, string $narration)
     {
+        try {
+            $response = Http::withToken(config('readycash.token'))->post(config('readycash.wallet_url') . '/transactions/transfer', [
+                "fromAccountNumber" => $fromAccountNumber,
+                "amount" => $amount,
+                "memo" => $narration,
+                "toAccountNumber" => $toAccountNumber,
+                "transactionRef" => $sender_reference,
+            ]);
+
+            if (!$response)
+                $response->throw();
+
+            return $response->collect()->toArray();
+        } catch (ConnectionException $conEx) {
+            return [
+                'code' => '00976',
+                'desc' => 'Service Unreachable',
+                'retRef' => '',
+                'stan' => '',
+                'transdatetime' => NULL,
+                'bvn' => '',
+                'voucher' => '',
+                'extra' => '',
+                'pin' => '',
+            ];;
+        } catch (\Throwable $th) {
+            return [
+                'code' => '000988',
+                'desc' => 'An Unknown error occured',
+                'retRef' => '',
+                'stan' => '',
+                'transdatetime' => NULL,
+                'bvn' => '',
+                'voucher' => '',
+                'extra' => '',
+                'pin' => '',
+            ];
+        }
     }
 }
