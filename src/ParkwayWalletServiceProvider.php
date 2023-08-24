@@ -4,6 +4,7 @@ namespace Parkway\Wallet\Sdk;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Parkway\Wallet\Sdk\Console\FetchParkwayWalletPublicKey;
 use Parkway\Wallet\Sdk\Console\GenerateRSAKeys;
 use Parkway\Wallet\Sdk\Http\Middleware\EncryptResponse;
 use Parkway\Wallet\Sdk\Http\Middleware\ValidateRequestSignature;
@@ -43,7 +44,8 @@ class ParkwayWalletServiceProvider extends ServiceProvider
         #register command
         if ($this->app->runningInConsole()) {
             $this->commands([
-                GenerateRSAKeys::class
+                GenerateRSAKeys::class,
+                FetchParkwayWalletPublicKey::class
             ]);
         }
     }

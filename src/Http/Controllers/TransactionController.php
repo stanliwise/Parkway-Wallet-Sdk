@@ -8,7 +8,7 @@ use Parkway\Wallet\Sdk\Services\BankServices;
 
 class TransactionController
 {
-    public function walletToWallet(Request $request, string $walletNumber)
+    public function walletToBank(Request $request, string $walletNumber)
     {
         $validation_payload = $request->all() + ['walletNumber' => $walletNumber];
 
@@ -25,9 +25,8 @@ class TransactionController
         $validator->validate();
 
         try {
-            //code...
             $bankService = new BankServices;
-    
+
             $response = $bankService->processExternalTransfer(
                 $walletNumber,
                 $request->toAccountNumber,
@@ -37,12 +36,14 @@ class TransactionController
                 $request->transactionRef,
                 $request->memo
             );
+
+            return response()->json($response);
         } catch (\Throwable $th) {
             //throw $th;
         }
     }
 
-    public function walletToBank(Request $request, string $walletNumber)
+    public function walletToWallet(Request $request, string $walletNumber)
     {
         $request->validate([]);
     }

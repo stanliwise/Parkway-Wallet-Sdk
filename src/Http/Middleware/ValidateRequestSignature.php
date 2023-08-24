@@ -23,7 +23,7 @@ class ValidateRequestSignature
     {
         try {
             $json = $request->getContent() ?? "";
-            $is_valid = PublicKey::fromFile(storage_path('public.key'))->verify($json, $request->header('Pw-Signature') ?? "");
+            $is_valid = PublicKey::fromFile(config('pwsdk.parkway-wallet.publicKeyPath'))->verify($json, $request->header('Pw-Signature') ?? "");
             abort_unless($is_valid, Response::HTTP_UNAUTHORIZED, 'Signature verification failed');
         } catch (HttpResponseException | HttpException $httpEx) {
             throw $httpEx;
