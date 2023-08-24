@@ -28,12 +28,12 @@ class EncryptResponse
         try {
             //code...
             // Encrypt the JSON data
-            $encryptedData = PrivateKey::fromFile(storage_path('private.key'))->sign($response->getContent() ?? '');
+            $encryptedData = PrivateKey::fromFile(config('pwsdk.privateKeyPath'))->sign($response->getContent() ?? '');
 
             // Set the encrypted data in the "PW-header" header
-            $response->headers->set('PW-header', $encryptedData);
+            $response->headers->set('PW-Signature', $encryptedData);
         } catch (\Throwable $th) {
-            abort(Response::HTTP_INTERNAL_SERVER_ERROR, 'An unknown server error occured');
+            abort(Response::HTTP_INTERNAL_SERVER_ERROR, 'An Unknown Server Error Occured');
         }
 
         return $response;

@@ -39,10 +39,10 @@ class GenerateRSAKeys extends Command
     public function handle()
     {
         //check folder is present else create
-        if (!file_exists($path = storage_path('rsaKeys')))
+        if (!file_exists($path = dirname(config('pwsdk.publicKeyPath'))))
             mkdir($path, 0600, true);
 
-        (new KeyPair())->generate(storage_path('rsakeys/private.key'), storage_path('rsaKeys/public.key'));
+        (new KeyPair())->generate(config('pwsdk.privateKeyPath'), config('pwsdk.publicKeyPath'));
 
         return static::SUCCESS;
     }
