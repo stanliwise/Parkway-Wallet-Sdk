@@ -13,16 +13,27 @@ class TransactionController
         $validation_payload = $request->all() + ['walletNumber' => $walletNumber];
 
         $validator = Validator::make($validation_payload, [
-            'destinationBankCode' => 'bail|required|numeric|min:3',
-            'toAccountNumber' => 'bail|required|numeric|min:10',
+            'destinationBankCode' => 'bail|required|numeric|digits:3',
+            'toAccountNumber' => 'bail|required|numeric|digits:10',
             'toAccountName' => 'bail|required|string',
             'transactionRef' => 'bail|required|string|min:5',
             'memo' => 'bail|string|nullable',
             'amount' => ['bail', 'required', 'numeric', 'gt:0'],
-            'walletNumber' => 'bail|required|min:11|max:11'
+            'walletNumber' => 'bail|required|min:11|digits:10'
         ]);
 
-        $validator->validate();
+        if ($validator->fails())
+            return response()->json([
+                'code' => '00976',
+                'desc' => $validator->getMessageBag()->first(),
+                'retRef' => '',
+                'stan' => '',
+                'transdatetime' => NULL,
+                'bvn' => '',
+                'voucher' => '',
+                'extra' => '',
+                'pin' => '',
+            ]);
 
         try {
             $bankService = new BankServices;
@@ -39,12 +50,70 @@ class TransactionController
 
             return response()->json($response);
         } catch (\Throwable $th) {
-            //throw $th;
+            return [
+                'code' => '00988',
+                'desc' => 'An Unknown error occured',
+                'retRef' => '',
+                'stan' => '',
+                'transdatetime' => NULL,
+                'bvn' => '',
+                'voucher' => '',
+                'extra' => '',
+                'pin' => '',
+            ];
         }
     }
 
     public function walletToWallet(Request $request, string $walletNumber)
     {
-        $request->validate([]);
+        $validation_payload = $request->all() + ['walletNumber' => $walletNumber];
+
+        $validator = Validator::make($validation_payload, [
+            'fromAccountNumber' => 'bail|required|numeric|digits:10',
+            'toAccountNumber' => 'bail|required|string',
+            'transactionRef' => 'bail|required|string|min:5',
+            'memo' => 'bail|string|nullable',
+            'amount' => ['bail', 'required', 'numeric', 'gt:0'],
+            'walletNumber' => 'bail|required|digits:10'
+        ]);
+
+        if ($validator->fails())
+            return response()->json([
+                'code' => '00976',
+                'desc' => $validator->getMessageBag()->first(),
+                'retRef' => '',
+                'stan' => '',
+                'transdatetime' => NULL,
+                'bvn' => '',
+                'voucher' => '',
+                'extra' => '',
+                'pin' => '',
+            ]);
+
+        try {
+            $bankService = new BankServices;
+
+            $response = $bankService->processLocalTransfer(
+                $request->fromAccountNumber,
+                $request->toAccountName,
+                $request->transactionRef,
+                $request->amount,
+                $request->memo,
+            );
+
+            return response()->json($response);
+        } catch (\Throwable $th) {
+            return [
+                'code' => '00988',
+                'desc' => 'An Unknown error occured',
+                'retRef' => '',
+                'stan' => '',
+                'transdatetime' => NULL,
+                'bvn' => '',
+                'voucher' => '',
+                'extra' => '',
+                'pin' => '',
+            ];
+        }
     }
 }

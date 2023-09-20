@@ -26,7 +26,6 @@ class EncryptResponse
         $response = $next($request);
 
         try {
-            //code...
             // Encrypt the JSON data
             $encryptedData = PrivateKey::fromFile(config('pwsdk.privateKeyPath'))->sign($response->getContent() ?? '');
 
