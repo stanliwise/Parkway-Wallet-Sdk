@@ -48,6 +48,8 @@ class TransactionController
                 $request->memo
             );
 
+            logger('was hereeeeeeeeeeeeee');
+
             return response()->json($response);
         } catch (\Throwable $th) {
             return [
@@ -66,6 +68,7 @@ class TransactionController
 
     public function walletToWallet(Request $request, string $walletNumber)
     {
+        logger(['loalllllllllllll']);
         $validation_payload = $request->all() + ['walletNumber' => $walletNumber];
 
         $validator = Validator::make($validation_payload, [
