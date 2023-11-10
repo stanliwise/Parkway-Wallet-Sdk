@@ -9,4 +9,10 @@ return [
     'publicKeyPath' => env('RSA_PUBLIC_KEY_PATH', storage_path('rsaKeys/public.key')),
 
     'privateKeyPath' => env('RSA_PRIVATE_KEY_PATH', storage_path('rsaKeys/private.key')),
+
+    'readycash' => [
+        'base_url' => env('READYCASH_BASE_URL'),
+        'wallet_url' => env('READYCASH_BASE_URL') . '/api/provider/wallets',
+        'token' => env('READYCASH_TOKEN'),
+    ]
 ];
