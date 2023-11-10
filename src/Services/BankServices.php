@@ -20,7 +20,7 @@ class BankServices
 
         try {
             #check if wallet has been blacklisted
-            $response = Http::withToken(config('readycash.token'))->post(config('readycash.wallet_url') . '/transactions/banktransfer', [
+            $response = Http::withToken(config('pwsdk.readycash.token'))->post(config('pwsdk.readycash.wallet_url') . '/transactions/banktransfer', [
                 "destinationBankCode" => $bankCode,
                 "fromAccountNumber" => $wallet,
                 "toAccountNumber" => $toAccountNumber,
@@ -65,7 +65,7 @@ class BankServices
     public function processLocalTransfer(string $fromAccountNumber, string $toAccountNumber, string $sender_reference, string $amount, string $narration)
     {
         try {
-            $response = Http::withToken(config('readycash.token'))->post(config('readycash.wallet_url') . '/transactions/transfer', [
+            $response = Http::withToken(config('pwsdk.readycash.token'))->post(config('pwsdk.readycash.wallet_url') . '/transactions/transfer', [
                 "fromAccountNumber" => $fromAccountNumber,
                 "amount" => $amount,
                 "memo" => $narration,
