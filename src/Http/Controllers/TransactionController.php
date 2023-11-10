@@ -106,6 +106,7 @@ class TransactionController
 
             return response()->json($response);
         } catch (\Throwable $th) {
+            logger($th);
             return [
                 'code' => '00988',
                 'desc' => 'An Unknown error occured',
