@@ -35,6 +35,7 @@ class BankServices
 
             return $response->collect()->toArray();
         } catch (ConnectionException $conEx) {
+            logger($conEx);
             return [
                 'code' => '00976',
                 'desc' => 'Service Unreachable',
@@ -47,6 +48,7 @@ class BankServices
                 'pin' => '',
             ];
         } catch (\Throwable $th) {
+            logger($th);
             return [
                 'code' => '00988',
                 'desc' => 'An Unknown error occured',
@@ -78,6 +80,7 @@ class BankServices
 
             return $response->collect()->toArray();
         } catch (ConnectionException $conEx) {
+            logger($conEx);
             return [
                 'code' => '00976',
                 'desc' => 'Service Unreachable',
@@ -90,6 +93,7 @@ class BankServices
                 'pin' => '',
             ];;
         } catch (\Throwable $th) {
+            logger($th);
             return [
                 'code' => '000988',
                 'desc' => 'An Unknown error occured',
