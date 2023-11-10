@@ -48,8 +48,6 @@ class TransactionController
                 $request->memo
             );
 
-            logger('was hereeeeeeeeeeeeee');
-
             return response()->json($response);
         } catch (\Throwable $th) {
             return [
@@ -68,7 +66,6 @@ class TransactionController
 
     public function walletToWallet(Request $request, string $walletNumber)
     {
-        logger(['loalllllllllllll']);
         $validation_payload = $request->all() + ['walletNumber' => $walletNumber];
 
         $validator = Validator::make($validation_payload, [
@@ -98,7 +95,7 @@ class TransactionController
 
             $response = $bankService->processLocalTransfer(
                 $request->fromAccountNumber,
-                $request->toAccountName,
+                $request->toAccountNumber,
                 $request->transactionRef,
                 $request->amount,
                 $request->memo,
@@ -107,7 +104,7 @@ class TransactionController
             return response()->json($response);
         } catch (\Throwable $th) {
             logger($th);
-            
+
             return [
                 'code' => '00988',
                 'desc' => 'An Unknown error occured',
