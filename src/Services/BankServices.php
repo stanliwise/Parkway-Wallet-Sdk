@@ -95,7 +95,7 @@ class BankServices
         } catch (\Throwable $th) {
             logger($th);
             return [
-                'code' => '000988',
+                'code' => '00988',
                 'desc' => 'An Unknown error occured',
                 'retRef' => '',
                 'stan' => '',
