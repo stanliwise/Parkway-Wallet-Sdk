@@ -96,7 +96,7 @@ class TransactionController
 
             $response = $bankService->processLocalTransfer(
                 $request->fromAccountNumber,
-                $request->toAccountName,
+                $request->toAccountNumber,
                 $request->transactionRef,
                 $request->amount,
                 $request->memo,
