@@ -13,13 +13,13 @@ class TransactionController
         $validation_payload = $request->all() + ['walletNumber' => $walletNumber];
 
         $validator = Validator::make($validation_payload, [
-            'destinationBankCode' => 'bail|required|numeric|digits:3',
+            'destinationBankCode' => 'bail|required|numeric',
             'toAccountNumber' => 'bail|required|numeric|digits:10',
             'toAccountName' => 'bail|required|string',
             'transactionRef' => 'bail|required|string|min:5',
             'memo' => 'bail|string|nullable',
             'amount' => ['bail', 'required', 'numeric', 'gt:0'],
-            'walletNumber' => 'bail|required|min:11|digits:10'
+            'walletNumber' => 'bail|required|min:10|digits:10'
         ]);
 
         if ($validator->fails())
