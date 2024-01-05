@@ -64,7 +64,7 @@ class BankServices
     }
 
 
-    public function processLocalTransfer(string $fromAccountNumber, string $toAccountNumber, string $sender_reference, string $amount, string $narration)
+    public function processLocalTransfer(string $fromAccountNumber, string $toAccountNumber, string $sender_reference, string $amount, $narration =  null)
     {
         try {
             $response = Http::withToken(config('pwsdk.readycash.token'))->post(config('pwsdk.readycash.wallet_url') . '/transactions/transfer', [
